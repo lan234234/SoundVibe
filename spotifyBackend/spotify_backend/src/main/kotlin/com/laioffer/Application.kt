@@ -10,6 +10,19 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
 
+data class Song(
+    val name: String,
+    val lyric: String,
+    val src: String,
+    val length: String
+)
+
+data class Playlist(
+    val id: Long,
+    val songs: List<Song>
+)
+
+
 fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
