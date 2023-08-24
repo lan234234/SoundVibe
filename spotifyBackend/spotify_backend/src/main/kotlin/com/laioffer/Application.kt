@@ -9,6 +9,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
 @Serializable
@@ -53,6 +54,14 @@ fun Application.module() {
             val jsonString = this::class.java.classLoader.getResource("playlists.json").readText()
             val json = Json.parseToJsonElement(jsonString)
             call.respondText(json.toString(), ContentType.Application.Json)
+        }
+
+        get("/playlist/{id}") {
+            val jsonString = this::class.java.classLoader.getResource("playlists.json").readText()
+            val playlists = Json.decodeFromString(ListSerializer(Playlist.serializer()), jsonString)
+            val id: String? = call.parameters["id"]
+            val playlist: Playlist? =  playlists.firstOrNull { item -> item.id.toString() == id  }
+            call.respondNullable(playlist)
         }
     }
 }
