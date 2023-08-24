@@ -1,5 +1,6 @@
 package com.laioffer
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -24,6 +25,12 @@ fun Application.module() {
     routing {
         get("/") {
             call.respondText("Hello World!")
+        }
+
+        get("/feed") {
+            val jsonString = this::class.java.classLoader.getResource("feed.json").readText()
+            val json = Json.parseToJsonElement(jsonString)
+            call.respondText(json.toString(), ContentType.Application.Json)
         }
     }
 }
