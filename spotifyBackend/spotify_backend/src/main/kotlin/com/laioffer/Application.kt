@@ -8,8 +8,10 @@ import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
+@Serializable
 data class Song(
     val name: String,
     val lyric: String,
@@ -17,6 +19,7 @@ data class Song(
     val length: String
 )
 
+@Serializable
 data class Playlist(
     val id: Long,
     val songs: List<Song>
