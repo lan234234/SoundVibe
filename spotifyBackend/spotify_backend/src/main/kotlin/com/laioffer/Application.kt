@@ -32,5 +32,11 @@ fun Application.module() {
             val json = Json.parseToJsonElement(jsonString)
             call.respondText(json.toString(), ContentType.Application.Json)
         }
+
+        get("/playlists") {
+            val jsonString = this::class.java.classLoader.getResource("playlists.json").readText()
+            val json = Json.parseToJsonElement(jsonString)
+            call.respondText(json.toString(), ContentType.Application.Json)
+        }
     }
 }
