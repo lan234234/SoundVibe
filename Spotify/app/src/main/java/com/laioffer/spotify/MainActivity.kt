@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    AlbumCover()
                 }
             }
         }
@@ -54,7 +55,42 @@ fun LoadSection(text: String) {
     }
 }
 
+@Composable
+fun AlbumCover() {
+    Column {
+        Box(modifier = Modifier.size(160.dp)) {
+            AsyncImage(
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillBounds,
+                model = "https://upload.wikimedia.org/wikipedia/en/d/d1/Stillfantasy.jpg",
+                contentDescription = null
+            )
 
+            Text(
+                text = "Still Fantasy",
+                color = Color.White,
+                modifier = Modifier.padding(bottom = 4.dp, start = 4.dp).align(Alignment.BottomStart)
+            )
+        }
+
+        Text(
+            text = "Jay Chou",
+            modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+            style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
+            color = Color.LightGray,
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewAlbumCover() {
+    SpotifyTheme {
+        Surface {
+            AlbumCover()
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
