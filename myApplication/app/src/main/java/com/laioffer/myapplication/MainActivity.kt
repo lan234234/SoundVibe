@@ -41,7 +41,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    Greeting("Android")
+                    var name by remember { mutableStateOf("") }
+
+                    HelloContentWithStateless(
+                        name = name, // data
+                        onTextChange = {text -> // event
+                        name = text
+                    })
                 }
             }
         }
@@ -82,35 +88,116 @@ class MainActivity : ComponentActivity() {
 //    }
 }
 
-//    2. learning compose layout-------------------
+////    2. learning compose layout-------------------
+//
+//@Composable
+//fun ArtistCardBox() {
+//    Column {
+//        Text("Alfred Sisley")
+//        Text("3 minutes ago")
+//    }
+//}
+//
+//@Preview
+//@Composable
+//fun previewArtistCardBox() {
+//    ArtistCardBox()
+//}
+//
+//@Composable
+//fun Greeting(name: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = "Hello $name!",
+//        modifier = Modifier.background(Color.Green)
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun GreetingPreview() {
+//    MyApplicationTheme {
+//        Greeting("Android")
+//    }
+//}
 
+//    3.learning state---------------------------------
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArtistCardBox() {
-    Column {
-        Text("Alfred Sisley")
-        Text("3 minutes ago")
+private fun HelloContent() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text(
+            text = "Hello!",
+            modifier = Modifier.padding(bottom = 8.dp),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        OutlinedTextField(
+            value = "",
+            onValueChange = {
+                    name ->
+                Log.d("MainActivity", name)
+            },
+            label = { Text("Name") }
+        )
     }
 }
 
-@Preview
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun previewArtistCardBox() {
-    ArtistCardBox()
+private fun HelloContentWithState() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        var name by remember { mutableStateOf("") }
+        // by: setValue, getValue
+//         var name: String = ""
+
+        if (name.isNotEmpty()) {
+            Text(
+                text = "Hello! $name",
+                modifier = Modifier.padding(bottom = 8.dp),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        OutlinedTextField(
+            value = name,
+            onValueChange = { text ->
+                name = text
+            },
+            label = { Text("Name") }
+        )
+    }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = Modifier.background(Color.Green)
-    )
+private fun HelloContentWithStateless(name: String, onTextChange: (String) -> Unit) {
+    Column(modifier = Modifier.padding(16.dp)) {
+//        var name by remember { mutableStateOf("") }
+        // by: setValue, getValue
+//         var name: String = ""
+
+        if (name.isNotEmpty()) {
+            Text(
+                text = "Hello! $name",
+                modifier = Modifier.padding(bottom = 8.dp),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        OutlinedTextField(
+            value = name,
+            onValueChange = onTextChange,
+            label = { Text("Name") }
+        )
+    }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     MyApplicationTheme {
-        Greeting("Android")
+        HelloContent()
     }
 }
-
