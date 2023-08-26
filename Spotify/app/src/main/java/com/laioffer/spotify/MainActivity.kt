@@ -1,7 +1,6 @@
 package com.laioffer.spotify
 
 import android.os.Bundle
-import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,26 +19,36 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import coil.compose.AsyncImage
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.laioffer.spotify.ui.theme.SpotifyTheme
 
 // customized extend AppCompatActivity
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContent {
-//            SpotifyTheme {
-//                // A surface container using the 'background' color from the theme
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colors.background
-//                ) {
-//                    AlbumCover()
-//                }
-//            }
-//        }
-
         setContentView(R.layout.activity_main)
+
+        // find the bottom nav view
+        val navView = findViewById<BottomNavigationView>(R.id.nav_view)
+
+        // get navController
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        navController.setGraph(R.navigation.nav_graph)
+
+        NavigationUI.setupWithNavController(navView, navController)
+
+        // https://stackoverflow.com/questions/70703505/navigationui-not-working-correctly-with-bottom-navigation-view-implementation
+//        navView.setOnItemSelectedListener{
+//            NavigationUI.onNavDestinationSelected(it, navController)
+//            navController.popBackStack(it.itemId, inclusive = false)
+//            true
+//        }
     }
 }
 
