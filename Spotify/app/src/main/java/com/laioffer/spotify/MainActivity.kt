@@ -28,13 +28,22 @@ import com.laioffer.spotify.datamodel.Section
 import com.laioffer.spotify.network.NetworkApi
 import com.laioffer.spotify.network.NetworkModule
 import com.laioffer.spotify.ui.theme.SpotifyTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
+import retrofit2.Retrofit
+import javax.inject.Inject
 
 // customized extend AppCompatActivity
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    // field injection
+    @Inject
+    lateinit var api: NetworkApi
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -60,8 +69,6 @@ class MainActivity : AppCompatActivity() {
 
         // Coroutine
         GlobalScope.launch(Dispatchers.IO) {
-            val retrofit = NetworkModule.provideRetrofit()
-            val api: NetworkApi = retrofit.create(NetworkApi::class.java)
             val call: Call<List<Section>> = api.getHomeFeed()
             val feed = call.execute().body()
             Log.d("Network", feed.toString())
